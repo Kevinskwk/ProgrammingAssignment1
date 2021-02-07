@@ -256,7 +256,74 @@ int shellExecuteInput(char **args)
   // 6. Return the child's return value to the caller of shellExecuteInput
   // 7. If args[0] is not in builtin_command, print out an error message to tell the user that command doesn't exist and return 1
 
-  return 1;
+  if (args[0] == NULL)  // An empty command is entered
+  {
+    return 1;
+  }
+  else
+  {
+    int i = numOfBuiltinFunctions() - 1;
+    while (i >= 0)
+    {
+      if (strcmp(args[0], builtin_commands[i]) == 0)
+      {
+        break;
+      }
+      else
+      {
+        i--;
+      }
+    }
+
+    if (i < 0)  // args[0] is not in builtin_command
+    {
+      perror("Invalid command received. Type help to see what commands are implemented");
+      return 1;
+    }
+    else
+    {
+      if (strcmp(args[0], "cd") != 0 &&
+          strcmp(args[0], "help") != 0 &&
+          strcmp(args[0], "exit") != 0 &&
+          strcmp(args[0], "usage") != 0)
+      {
+        // Not sure if this part is correct
+        pid_t pid = fork();
+        if (pid == -1)
+        {
+          perror("fork failed");
+          return 1;
+        }
+        
+        if (pid == 0)  // Code executed by child
+        {
+          printf("fork worked! waiting for child!\n");
+          exit(builtin_commandFunc[i](args));
+        }
+        
+        else  // Code executed by parent
+        {
+          int status;
+          int exit_status = 0;
+          //if child terminates properly, WIFEXITED(status) returns TRUE
+          do
+          {
+            waitpid(pid, &status, WUNTRACED);
+            if (WIFEXITED(status))
+            {
+              exit_status = WEXITSTATUS(status);
+            }
+          }
+          while (!WIFEXITED(status));
+          return exit_status;
+        }
+      }
+      else
+      {
+        return builtin_commandFunc[i](args);
+      }
+    }
+  }
 }
 
 /**
@@ -367,6 +434,8 @@ int main(int argc, char **argv)
  char** args = shellTokenizeInput(line);
  printf("The first token is %s \n", args[0]);
  printf("The second token is %s \n", args[1]);
+
+ shellExecuteInput(args);
  
  return 0;
 }
