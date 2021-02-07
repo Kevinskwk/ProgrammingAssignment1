@@ -273,14 +273,15 @@ char *shellReadLine(void)
   // 4. Return the char*
 
   char* buffer = malloc(sizeof(char) * SHELL_BUFFERSIZE);
-  if (buffer != NULL) {  
+  if (buffer != NULL)
+  {  
     // do some thing usefull 
     size_t size = sizeof(buffer);
-
     getline(&buffer, &size, stdin);
-
     return buffer; 
-  } else {  
+  }
+  else
+  {  
     // no memory. safely return/throw ... 
     return NULL; 
   }  
@@ -299,24 +300,27 @@ char **shellTokenizeInput(char *line)
   // 3. Tokenize the *line using strtok() function
   // 4. Return the char **
 
-  char **token_positions = malloc(sizeof(char *) * 8);
-  if (token_positions != NULL) {  
+  char **token_positions = malloc(sizeof(char *) * SHELL_BUFFERSIZE);
+  if (token_positions != NULL)
+  {  
     // do some thing usefull  
-    char *token = strtok(line, " ");
+    char *token = strtok(line, SHELL_INPUT_DELIM);
     int index = 0;
 
     token_positions[index] = token;
     index++;
     while (token != NULL)
     {
-        // Tokenize the rest of the command
-        token = strtok(NULL, " \n\t");      //continue finding the next token
-        token_positions[index] = token; //store the position
-        index++;
+      // Tokenize the rest of the command
+      token = strtok(NULL, SHELL_INPUT_DELIM);  //continue finding the next token
+      token_positions[index] = token;  //store the position
+      index++;
     }
-    token_positions[index] = NULL; //dont forget to NULL terminate.
+    token_positions[index] = NULL;  //dont forget to NULL terminate.
     return token_positions;
-  } else {  
+  }
+  else
+  {  
     // no memory. safely return/throw ...  
     return NULL;
     // TODO: find out appropriate reaction to failed malloc
