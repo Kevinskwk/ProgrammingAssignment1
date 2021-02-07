@@ -277,7 +277,7 @@ int shellExecuteInput(char **args)
 
     if (i < 0)  // args[0] is not in builtin_command
     {
-      perror("Invalid command received. Type help to see what commands are implemented");
+      printf("Invalid command received. Type help to see what commands are implemented.\n");
       return 1;
     }
     else
@@ -291,7 +291,7 @@ int shellExecuteInput(char **args)
         pid_t pid = fork();
         if (pid == -1)
         {
-          perror("fork failed");
+          printf("fork failed");
           return 1;
         }
         
