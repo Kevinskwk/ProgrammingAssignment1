@@ -14,17 +14,10 @@ int shellFind(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellFind if execvp fails to allow loop to continue
-  if (args[1] == NULL)
-  {
-    fprintf(stderr, "CSEShell: expected argument to \"find\"\n");
+  if(execvp("shellPrograms/find",args)==-1){
+    printf("error!");
   }
-  else
-  {
-    if(execvp("shellPrograms/find",args)==-1){
-      printf("error!");
-    }
-    else return 0;
-  }
+  else return 0;
   return 1;
 }
 
@@ -42,17 +35,10 @@ int shellDisplayFile(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDisplayFile if execvp fails to allow loop to continue
   
-  if (args[1] == NULL)
-  {
-    fprintf(stderr, "CSEShell: expected argument to \"display\"\n");
+  if(execvp("shellPrograms/display",args)==-1){
+    printf("error!");
   }
-  else
-  {
-    if(execvp("shellPrograms/display",args)==-1){
-      printf("error!");
-    }
-    else return 0;
-  }
+  else return 0;
   return 1;
 }
 
@@ -71,17 +57,10 @@ int shellListDirAll(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDirAll if execvp fails to allow loop to continue
   
-  if (args[1] == NULL)
-  {
-    fprintf(stderr, "CSEShell: expected argument to \"listdirall\"\n");
+  if(execvp("shellPrograms/listdirall",args)==-1){
+    printf("error!");
   }
-  else
-  {
-    if(execvp("shellPrograms/listdirall",args)==-1){
-      printf("error!");
-    }
-    else return 0;
-  }
+  else return 0;
   return 1;
 }
 
@@ -99,17 +78,11 @@ int shellListDir(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDir
   
-  if (args[1] == NULL)
-  {
-    fprintf(stderr, "CSEShell: expected argument to \"listdir\"\n");
+  if(execvp("shellPrograms/listdir",args)==-1){
+    printf("error!");
   }
-  else
-  {
-    if(execvp("shellPrograms/listdir",args)==-1){
-      printf("error!");
-    }
-    else return 0;
-  }
+  else return 0;
+  
   return 1;
 }
 
