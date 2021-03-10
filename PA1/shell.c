@@ -235,15 +235,17 @@ int shellUsage(char **args)
   int functionIndex = -1;
 
   // Check if the commands exist in the command list
-  for (int i = 0; i < numOfBuiltinFunctions(); i++)
-  {
-    if (strcmp(args[1], builtin_commands[i]) == 0)
+  if(args[1]==NULL) functionIndex=3;
+  else{
+    for (int i = 0; i < numOfBuiltinFunctions(); i++)
     {
-      //pass it to the functions
-      functionIndex = i;
+      if (strcmp(args[1], builtin_commands[i]) == 0)
+      {
+        //pass it to the functions
+        functionIndex = i;
+      }
     }
   }
-
   switch (functionIndex)
   {
   case 0:
@@ -490,3 +492,4 @@ int main(int argc, char **argv)
  
  return 0;
 }
+
