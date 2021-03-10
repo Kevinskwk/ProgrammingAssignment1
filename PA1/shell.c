@@ -17,7 +17,6 @@ int shellFind(char **args)
   if(execvp("shellPrograms/find",args)==-1){
     printf("error!");
   }
-  else return 0;
   return 1;
 }
 
@@ -38,7 +37,6 @@ int shellDisplayFile(char **args)
   if(execvp("shellPrograms/display",args)==-1){
     printf("error!");
   }
-  else return 0;
   return 1;
 }
 
@@ -60,7 +58,6 @@ int shellListDirAll(char **args)
   if(execvp("shellPrograms/listdirall",args)==-1){
     printf("error!");
   }
-  else return 0;
   return 1;
 }
 
@@ -81,7 +78,6 @@ int shellListDir(char **args)
   if(execvp("shellPrograms/listdir",args)==-1){
     printf("error!");
   }
-  else return 0;
   
   return 1;
 }
@@ -110,7 +106,6 @@ int shellCountLine(char **args)
     if(execvp("shellPrograms/countline",args)==-1){
       printf("error!");
     }
-    else return 0;
   }
   return 1;
 }
@@ -138,7 +133,6 @@ int shellSummond(char **args)
     if(execvp("shellPrograms/summond",args)==-1){
       printf("error!");
     }
-    else return 0;
   }
 
   return 1;
@@ -169,7 +163,6 @@ int shellCheckDaemon(char **args)
     if(execvp("shellPrograms/checkdaemon",args)==-1){
       printf("error!");
     }
-    else return 0;
   }
 
   return 1;
@@ -455,41 +448,69 @@ char **shellTokenizeInput(char *line)
 void shellLoop(void)
 {
   //instantiate local variables
-  char *line;  // to accept the line of string from user
-  char **args; // to tokenize them as arguments separated by spaces
+  //char *line;  // to accept the line of string from user
+  //char **args; // to tokenize them as arguments separated by spaces
   int status;  // to tell the shell program whether to terminate shell or not
 
+  char* line = (char*)malloc(sizeof(char) * SHELL_BUFFERSIZE);
+  char** args = (char**)malloc(2*sizeof(char) * SHELL_BUFFERSIZE);
+  
 
   /** TASK 5 **/
   //write a loop where you do the following: 
+  status=1;
+  while(status==1){
+    // 1. print the message prompt 
+    printf("CSEShell> ");
+    
+    // 2. clear the buffer and move the output to the console using fflush
+    fflush(stdout);
 
-  // 1. print the message prompt
-  // 2. clear the buffer and move the output to the console using fflush
-  // 3. invoke shellReadLine() and store the output at line
-  // 4. invoke shellTokenizeInput(line) and store the output at args**
-  // 5. execute the tokens using shellExecuteInput(args)
+    // 3. invoke shellReadLine() and store the output at line
+    line = shellReadLine();
+    //printf("The fetched line is : %s \n", line);
+    // 4. invoke shellTokenizeInput(line) and store the output at args**
+    args = shellTokenizeInput(line);
+    //printf("The first token is %s \n", args[0]);
+    //printf("The second token is %s \n", args[1]);
+    // 5. execute the tokens using shellExecuteInput(args)
+    status=shellExecuteInput(args);
 
-  // 6. free memory location containing the strings of characters
-  // 7. free memory location containing char* to the first letter of each word in the input string
-  // 8. check if shellExecuteInput returns 1. If yes, loop back to Step 1 and prompt user with new input. Otherwise, exit the shell. 
+    // 6. free memory location containing the strings of characters
+    free(line);
+    // 7. free memory location containing char* to the first letter of each word in the input string
+    free(args);
+    // 8. check if shellExecuteInput returns 1. If yes, loop back to Step 1 and prompt user with new input. Otherwise, exit the shell.
+    //printf("%d\n",status);
+  }
 
 
 }
 
+// int main(int argc, char **argv)
+// {
+ 
+//  printf("Shell Run successful. Running now: \n");
+ 
+//  char* line = shellReadLine();
+//  printf("The fetched line is : %s \n", line);
+ 
+//  char** args = shellTokenizeInput(line);
+//  printf("The first token is %s \n", args[0]);
+//  printf("The second token is %s \n", args[1]);
+
+//  shellExecuteInput(args);
+ 
+//  return 0;
+// }
+
+//task 5
 int main(int argc, char **argv)
 {
  
  printf("Shell Run successful. Running now: \n");
  
- char* line = shellReadLine();
- printf("The fetched line is : %s \n", line);
- 
- char** args = shellTokenizeInput(line);
- printf("The first token is %s \n", args[0]);
- printf("The second token is %s \n", args[1]);
-
- shellExecuteInput(args);
- 
+ // Run command loop
+ shellLoop();
  return 0;
 }
-
