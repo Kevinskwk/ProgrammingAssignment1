@@ -129,9 +129,16 @@ int shellSummond(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDaemonize if execvp fails to allow loop to continue
 
-  if (execvp("shellPrograms/summond", args) == -1)
+  if (args[1] == NULL)
   {
-    printf("error!");
+    fprintf(stderr, "CSEShell: expected argument to \"summond\"\n");
+  }
+  else
+  {
+    if (execvp("shellPrograms/summond", args) == -1)
+    {
+      printf("error!");
+    }
   }
 
   return 1;

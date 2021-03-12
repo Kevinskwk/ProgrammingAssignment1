@@ -16,26 +16,6 @@ int shellCountLine_code(char **args)
     // 7. Print out how many lines are there in this particular filename
     // 8. Return 1, to exit program
 
-    FILE *fp = fopen(args[1], "r");
-    if (fp == NULL)
-    {
-        printf("File '%s' doesnt exist\n", args[1]);
-        perror("fopen");
-        return 1;
-    }
-
-    int count = 0;
-    char *buffer = NULL;
-    size_t size = 0;
-
-    while (getline(&buffer, &size, fp) != -1)
-    {
-        count++;
-    }
-
-    fclose(fp);
-    printf("There are %d lines in %s\n", count, args[1]);
-
     return 1;
 }
 
